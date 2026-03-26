@@ -1,0 +1,6 @@
+@Golden_Crow_HostAddress = http://localhost:5064
+
+GET {{Golden_Crow_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
