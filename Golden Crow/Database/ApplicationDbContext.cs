@@ -2,6 +2,7 @@
 using System.Reflection.Metadata;
 using Golden_Crow.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Golden_Crow.Database
 {
@@ -37,6 +38,8 @@ namespace Golden_Crow.Database
             userEntity.Property(x=> x.Password)
                 .HasColumnName("password")
                 .IsRequired();
+
+            SeedUserData(userEntity);
 
             var accountEntity = modelBuilder.Entity<Account>()
                 .ToTable("accounts");
@@ -104,5 +107,27 @@ namespace Golden_Crow.Database
 
         }
 
+        private void SeedUserData(EntityTypeBuilder<User> userEntity)
+        {
+            userEntity.HasData
+             (
+                new User
+                {   Id = 1,
+                    Login = "admin",
+                    Name = "Administrator",
+                    Password = "admin"
+                },
+
+
+                new User
+                {
+                    Id = 2,
+                    Login = "user",
+                    Name = "Regular User",
+                    Password = "user"
+                }
+
+             );
+        }
     }
 }
