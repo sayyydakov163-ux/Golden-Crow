@@ -49,11 +49,11 @@ namespace Golden_Crow.Database
                 .IsRequired();
             accountEntity.Property(x => x.Balance)
                 .HasColumnName("balance")
+                .HasPrecision(18, 2)
                 .IsRequired();
             accountEntity.HasOne<User>()
                 .WithMany()
-                .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(x => x.UserId);
 
             var sessionEntry = modelBuilder.Entity<Session>()
                 .ToTable("sessions");
@@ -69,8 +69,7 @@ namespace Golden_Crow.Database
                 .IsRequired();
             sessionEntry.HasOne<User>()
                 .WithMany()
-                .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(x => x.UserId);
 
             var transactionEntity = modelBuilder.Entity<Transaction>()
                 .ToTable("transactions");
@@ -87,15 +86,18 @@ namespace Golden_Crow.Database
             transactionEntity.Property(x => x.CreatedAt)
                 .HasColumnName ("created_at")
                 .IsRequired();
+            transactionEntity.Property(x => x.Amount)
+                .HasColumnName("amount")
+                .HasPrecision(18,2)
+                .IsRequired();
             transactionEntity.HasOne<Account>()
                 .WithMany()
                 .HasForeignKey(x => x.SenderAccountId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
             transactionEntity.HasOne<Account>()
                 .WithMany()
-                .HasForeignKey (x => x.ReceiverAccountId)
-                .OnDelete(DeleteBehavior.Cascade);
-
+                .HasForeignKey(x => x.ReceiverAccountId)
+                .OnDelete(DeleteBehavior.NoAction); ;
 
 
 
