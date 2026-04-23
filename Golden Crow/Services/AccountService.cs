@@ -1,0 +1,41 @@
+﻿using Golden_Crow.Database;
+using Golden_Crow.Models;
+namespace Golden_Crow.Services;
+using Microsoft.EntityFrameworkCore;
+
+    public class AccountService : IAccountService
+    {
+        private readonly ApplicationDbContext _context;
+        
+
+        public AccountService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task CreateAccountAsync(string login)
+        {
+
+            var user = await _context.Users.FirstOrDefaultAsync<User>(x => x.Login == login);
+            if (user == null)
+
+                {
+                    throw new InvalidOperationException($"Unable to find a user with login: {login}");
+                }
+
+
+            var account = new Account
+            {
+                UserId = user.Id,
+                Balance = 0
+
+            };
+            
+            _context.Accounts.Add(account);
+            await _context.SaveChangesAsync();
+            
+            
+
+
+        }
+    }
