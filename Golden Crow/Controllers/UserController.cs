@@ -20,6 +20,11 @@ namespace Golden_Crow.Controllers
         [HttpPost("register")] //POST localhost:8080/ api/user/register
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
         {
+            if (ModelState.IsValid == false)
+            { 
+                return BadRequest(ModelState);
+            }
+
             var result = await _userService.RegisterAsync(request.Login, request.Name, request.Password);
 
             if (result)
