@@ -21,7 +21,7 @@ namespace Golden_Crow.Controllers
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
         {
             if (ModelState.IsValid == false)
-            { 
+            {
                 return BadRequest(ModelState);
             }
 
@@ -33,8 +33,28 @@ namespace Golden_Crow.Controllers
             }
 
             return BadRequest(new { Message = "User registration failed" });
+
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            if (ModelState.IsValid == false)
+            { 
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.LoginAsync(request.Login, request.Password);
+            if (result)
+            {
+                return Ok(new { Token = result.Value });
+            }
+
+            return NotFound();
         
         }
+
+
 
         
     }

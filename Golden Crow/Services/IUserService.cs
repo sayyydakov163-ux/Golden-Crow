@@ -7,7 +7,10 @@ namespace Golden_Crow.Services
 {
     public interface IUserService
     {
-        Task<bool> RegisterAsync(string login, string name, string password);
+        Task<Result<string>> LoginAsync(string login, string password);
+       
+        Task<Result> RegisterAsync(string login, string name, string password);
+        
     }
 
     
