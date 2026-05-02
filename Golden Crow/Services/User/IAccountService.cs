@@ -3,7 +3,7 @@ using Golden_Crow.Database;
 using Golden_Crow.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Golden_Crow.Services
+namespace Golden_Crow.Services.User
 {
     public interface IAccountService
     {

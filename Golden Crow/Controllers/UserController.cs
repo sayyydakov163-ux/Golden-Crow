@@ -1,5 +1,5 @@
-﻿using Golden_Crow.DTOs;
-using Golden_Crow.Services;
+﻿using Golden_Crow.DTOs.User;
+using Golden_Crow.Services.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -4,7 +4,7 @@ using Golden_Crow.Models;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Golden_Crow.Services
+namespace Golden_Crow.Services.User
 {
 
     public class AccountService : IAccountService
@@ -16,11 +16,11 @@ namespace Golden_Crow.Services
         {
             _context = context;
         }
-
+        
         public async Task CreateAccountAsync(string login)
         {
 
-            var user = await _context.Users.FirstOrDefaultAsync<User>(x => x.Login == login);
+            var user = await _context.Users.FirstOrDefaultAsync<Models.User>(x => x.Login == login);
             if (user == null)
 
             {

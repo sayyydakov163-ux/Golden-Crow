@@ -1,5 +1,6 @@
 using Golden_Crow.Database;
-using Golden_Crow.Services;
+using Golden_Crow.Services.Finance;
+using Golden_Crow.Services.User;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IFinanceService, FinanceService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

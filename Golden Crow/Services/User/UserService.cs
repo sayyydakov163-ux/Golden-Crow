@@ -4,7 +4,7 @@ using Golden_Crow.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Golden_Crow.Services
+namespace Golden_Crow.Services.User
 {
     public class UserService : IUserService
     {
@@ -27,9 +27,9 @@ namespace Golden_Crow.Services
             {
                 return Result.Failure("User alredy exists");
             }
-           
 
-            var user = new User
+
+            var user = new Models.User
             {
                 Login = login,
                 Name = name,
@@ -46,8 +46,8 @@ namespace Golden_Crow.Services
         }
 
         public async Task<Result<string>> LoginAsync(string login, string password)
-        { 
-            var user = await _context.Users.FirstOrDefaultAsync(x=> x.Login == login && x.Password == password);
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Login == login && x.Password == password);
             if (user == null)
             {
                 return Result<string>.Failure("Invalid login or password.");
@@ -60,7 +60,7 @@ namespace Golden_Crow.Services
                 ExpiresAt = DateTime.UtcNow.AddHours(1)
             };
 
-            var existingSession = await _context.Sessions.FirstOrDefaultAsync(x=> x.UserId == user.Id);
+            var existingSession = await _context.Sessions.FirstOrDefaultAsync(x => x.UserId == user.Id);
             if (existingSession != null)
             {
                 existingSession.Token = session.Token;
@@ -68,11 +68,11 @@ namespace Golden_Crow.Services
                 await _context.SaveChangesAsync();
 
             }
-            else 
+            else
             {
                 _context.Sessions.Add(session);
                 await _context.SaveChangesAsync();
-            
+
             }
 
 
