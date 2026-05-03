@@ -19,30 +19,39 @@ namespace Golden_Crow.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-           var atribute = context.GetEndpoint()?.Metadata.GetMetadata<MyAuthorizeAttribute>();
-            if (atribute != null)
+            var attribute = context.GetEndpoint()?.Metadata.GetMetadata<MyAuthorizeAttribute>();
+
+            // Если атрибута нет - эндпоинт публичный, пропускаем
+            if (attribute == null)
             {
                 await _next(context);
                 return;
             }
 
-            var token = context.Request.Headers[Constants.Autorization].FirstOrDefault()?.Split("").Last();
+            // Получаем токен из заголовка
+            var authHeader = context.Request.Headers[Constants.Authorization].FirstOrDefault();
+            var token = authHeader?.Replace("Bearer ", "");
+
             if (string.IsNullOrEmpty(token))
-            { 
-                context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
-            }
-
-            var scope = _scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-            var session = await dbContext.Sessions.FirstOrDefaultAsync(x => x.Token == token);
-            if (session != null || session.ExpiresAt < DateTime.UtcNow)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return;
             }
 
-            context.Items[Constants.UserIdContextParameter] = session.UserId;
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var session = await dbContext.Sessions.FirstOrDefaultAsync(x => x.Token == token);
+
+                // Проверяем: сессия существует и не истекла
+                if (session == null || session.ExpiresAt < DateTime.UtcNow)
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return;
+                }
+
+                context.Items[Constants.UserIdContextParameter] = session.UserId;
+            }
 
             await _next(context);
         }
