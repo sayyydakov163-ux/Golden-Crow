@@ -1,3 +1,4 @@
+using Golden_Crow.BackgroundService;
 using Golden_Crow.Database;
 using Golden_Crow.Middlewares;
 using Golden_Crow.Services.Finance;
@@ -22,6 +23,7 @@ options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
+builder.Services.AddHostedService<SessionCleanupService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
