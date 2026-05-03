@@ -6,9 +6,7 @@ namespace Golden_Crow.DTOs.Finance
 {
     public class DepositRequest
     {
-        [FromQuery]
-        [Required(ErrorMessage = "Поле token обязательно")]
-        public string Token { get; set; }
+       
 
         [Range(0.01, double.MaxValue, ErrorMessage ="Поле Amount должно быть не менее 0.01")]
         public decimal Amount { get; set; }
