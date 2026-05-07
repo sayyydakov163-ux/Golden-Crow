@@ -8,7 +8,7 @@ namespace Golden_Crow.DTOs.Finance
     {
        
 
-        [Range(0.01, double.MaxValue, ErrorMessage ="Поле Amount должно быть не менее 0.01")]
+        
         public decimal Amount { get; set; }
     }
 }

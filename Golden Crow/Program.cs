@@ -1,5 +1,7 @@
+using FluentValidation;
 using Golden_Crow.BackgroundService;
 using Golden_Crow.Database;
+using Golden_Crow.DTOs.User;
 using Golden_Crow.Middlewares;
 using Golden_Crow.Services.Finance;
 using Golden_Crow.Services.User;
@@ -23,6 +25,9 @@ options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<LoginRequest>();
+
 builder.Services.AddHostedService<SessionCleanupService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddEndpointsApiExplorer();
