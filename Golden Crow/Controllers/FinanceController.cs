@@ -1,8 +1,12 @@
 ﻿using FluentValidation;
 using Golden_Crow.Attributes;
 using Golden_Crow.DTOs.Finance;
+using Golden_Crow.Features.Deposit;
+using Golden_Crow.Features.GetBalance;
+using Golden_Crow.Features.GetTransactionHistory;
+using Golden_Crow.Features.Transfer;
 using Golden_Crow.Models;
-using Golden_Crow.Services.Finance;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Golden_Crow.Controllers
@@ -12,25 +16,27 @@ namespace Golden_Crow.Controllers
     [MyAuthorize]
     public class FinanceController : ControllerBase
     {
-       private readonly IFinanceService _financeService;
+      
+       private readonly IMediator _mediator;
 
-        public FinanceController(IFinanceService financeService)
+        public FinanceController(IMediator mediator)
         {
 
-            _financeService = financeService;
+            
+            _mediator = mediator;
         }
 
         [HttpGet("balance")]
-        public async Task <IActionResult> GetBalance()
+        public async Task <IActionResult> GetBalanceAsync()
         {
-            
-            var result = await _financeService.GetBalanceAsync(GetUserId());
-            if (result)
+
+            var balanceResult = await _mediator.Send(new GetBalanceQuery(GetUserId()));
+            if (balanceResult)
             {
-                return Ok(new BalanceResponse { Balance = result.Value });
+                return Ok(new BalanceResponse { Balance = balanceResult.Value });
             }
 
-            return BadRequest(new {Message = result.ErrorMessage });
+            return BadRequest(new {Message = balanceResult.ErrorMessage });
 
             
         }
@@ -45,13 +51,14 @@ namespace Golden_Crow.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
-            var depositResult = await _financeService.DepositAsync(GetUserId(), request.Amount);
-            if (depositResult)
-            { 
+            var result = await _mediator.Send(new DepositCommand(GetUserId(), request.Amount));
+           
+
+            if (result)
+            {
                 return Ok();
             }
-
-            return BadRequest(new { Message = depositResult.ErrorMessage });
+            return BadRequest(new { Message = result.ErrorMessage });
         }
 
         [HttpPost("transfer")]
@@ -64,12 +71,14 @@ namespace Golden_Crow.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
-            var transferResult = await _financeService.TransferAsync(GetUserId(), request.ReceiverLogin, request.Amount);
-            if (transferResult.IsSuccess)
+            var result = await _mediator.Send(new TransferCommand(GetUserId(), request.ReceiverLogin, request.Amount));
+           
+
+            if (result)
             {
                 return Ok();
             }
-            return BadRequest(new {Message = transferResult.ErrorMessage});
+            return BadRequest(new {Message = result.ErrorMessage});
 
 
 
@@ -87,12 +96,13 @@ namespace Golden_Crow.Controllers
             }
 
 
-            var historyResult = await _financeService.GetTransactionHistoryAsync(GetUserId(), request.From, request.To, request.Offset, request.Limit);
-            if (historyResult)
+            var result = await _mediator.Send(new GetTransactionHistoryQuery(GetUserId(), request.From, request.To, request.Offset, request.Limit));
+            
+            if (result)
             {
-                return Ok(historyResult.Value);
+                return Ok(result.Value);
             }
-            return BadRequest(new {Message = historyResult.ErrorMessage});
+            return BadRequest(new {Message = result.ErrorMessage});
 
         }
 

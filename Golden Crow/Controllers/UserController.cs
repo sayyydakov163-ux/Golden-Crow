@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using Golden_Crow.DTOs.User;
-using Golden_Crow.Services.User;
+using Golden_Crow.Features.User.UserLogin;
+using Golden_Crow.Features.User.UserRegister;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +12,13 @@ namespace Golden_Crow.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
+        
+        private readonly IMediator _mediator;
 
-        public UserController(IUserService userService)
+        public UserController( IMediator mediator)
         {
-            _userService = userService;
+            
+            _mediator = mediator;
         }
 
 
@@ -28,14 +32,15 @@ namespace Golden_Crow.Controllers
                 return BadRequest(validationResult.ToDictionary());
             }
 
-            var result = await _userService.RegisterAsync(request.Login, request.Name, request.Password);
+            var command = new UserRegisterCommand(request.Login, request.Name, request.Password);
+            var result = await _mediator.Send(command);
 
             if (result)
             {
                 return Ok();
             }
 
-            return BadRequest(new { Message = "User registration failed" });
+            return BadRequest(new { Message = result.ErrorMessage });
 
         }
 
@@ -49,7 +54,10 @@ namespace Golden_Crow.Controllers
                 return BadRequest(validationResult.ToDictionary());
             }
 
-            var result = await _userService.LoginAsync(request.Login, request.Password);
+            var command = new UserLoginCommand(request.Login, request.Password);
+            var result = await _mediator.Send(command);
+
+            
             if (result)
             {
                 return Ok(new { Token = result.Value });

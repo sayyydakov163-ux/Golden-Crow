@@ -3,8 +3,6 @@ using Golden_Crow.BackgroundService;
 using Golden_Crow.Database;
 using Golden_Crow.DTOs.User;
 using Golden_Crow.Middlewares;
-using Golden_Crow.Services.Finance;
-using Golden_Crow.Services.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -22,9 +20,13 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(connectionString));
 
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IFinanceService, FinanceService>();
+builder.Services.AddMediatR(cfg =>
+{
+   
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+
+});
+
 
 builder.Services.AddValidatorsFromAssemblyContaining<LoginRequest>();
 
