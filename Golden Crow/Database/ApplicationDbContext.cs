@@ -54,6 +54,10 @@ namespace Golden_Crow.Database
                 .HasColumnName("balance")
                 .HasPrecision(18, 2)
                 .IsRequired();
+            accountEntity.Property(x => x.Currency)
+                .HasColumnName("currency")
+                .IsRequired()
+                .HasDefaultValue(Currency.USD);
             accountEntity.HasOne<User>()
                 .WithMany()
                 .HasForeignKey(x => x.UserId);
@@ -89,6 +93,10 @@ namespace Golden_Crow.Database
             transactionEntity.Property(x => x.CreatedAt)
                 .HasColumnName ("created_at")
                 .IsRequired();
+            transactionEntity.Property(x => x.Currency)
+                .HasColumnName("currency")
+                .IsRequired()
+                .HasDefaultValue(Currency.USD);
             transactionEntity.Property(x => x.Amount)
                 .HasColumnName("amount")
                 .HasPrecision(18,2)

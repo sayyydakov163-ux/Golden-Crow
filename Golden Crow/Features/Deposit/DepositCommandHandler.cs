@@ -15,13 +15,8 @@ namespace Golden_Crow.Features.Deposit
 
         public async Task<Result> Handle(DepositCommand request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
-            if (user == null)
-            {
-                return Result.Failure("Пользователь не найден");
-            }
 
-            var account = await _dbContext.Accounts.FirstOrDefaultAsync(x => x.UserId == user.Id, cancellationToken);
+            var account = await _dbContext.Accounts.FirstOrDefaultAsync(x => x.UserId == request.UserId && x.Currency == request.Currency, cancellationToken);
             if (account == null)
             {
                 return Result.Failure("Аккаунт не найден");

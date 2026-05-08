@@ -8,7 +8,7 @@ namespace Golden_Crow.DTOs.Finance
     {
        
 
-        
+        public string Currency { get; set; }
         public decimal Amount { get; set; }
     }
 }

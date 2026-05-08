@@ -9,11 +9,14 @@ namespace Golden_Crow.Features.Transfer
 
         public decimal Amount { get; set; }
 
-        public TransferCommand(int fromUserId, string toLogin, decimal amount)
+        public string Currency { get; set; }
+
+        public TransferCommand(int fromUserId, string toLogin, decimal amount, string currency)
         { 
             FromUserId = fromUserId;
             ToLogin = toLogin;
             Amount = amount;
+            Currency = currency;
         }
 
 

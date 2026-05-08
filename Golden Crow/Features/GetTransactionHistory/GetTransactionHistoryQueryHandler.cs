@@ -22,8 +22,11 @@ namespace Golden_Crow.Features.GetTransactionHistory
                 return Result<List<TransactionHistoryResponse>>.Failure(errorMessage: "Некорректный диапазон дат");
             }
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(predicate: a => a.UserId == request.UserId, cancellationToken);
-            var transactions = _context.Transactions.Where(predicate: x => x.SenderAccountId == account!.Id || x.ReceiverAccountId == account!.Id);
+            var userAccountIds = await _context.Accounts
+                .Where(a=> a.UserId == request.UserId)
+                .Select(a => a.Id)
+                .ToListAsync(cancellationToken);
+            var transactions = _context.Transactions.Where(x => userAccountIds.Contains(x.SenderAccountId)|| userAccountIds.Contains(x.ReceiverAccountId));
 
             if (request.DateFrom != null)
             {
@@ -57,7 +60,9 @@ namespace Golden_Crow.Features.GetTransactionHistory
                 SenderName = names[t.SenderAccountId].Name,
                 ReceiverName = names[t.ReceiverAccountId].Name,
                 Amount = t.Amount,
-                Date = t.CreatedAt
+                Date = t.CreatedAt,
+                Currency = t.Currency
+
             
             }).ToList();
 

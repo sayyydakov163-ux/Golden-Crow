@@ -33,13 +33,18 @@ namespace Golden_Crow.Features.User.UserRegister
             _context.Users.Add(user);
             await _context.SaveChangesAsync(cancellationToken);
 
-            var account = new Account
-            {
-                UserId = user.Id,
-                Balance = 0,
-            };
+            foreach (var currency in new List<string>() { Currency.GBP, Currency.USD, Currency.EUR })
+            { 
+                var account = new Account
+                {
+                    UserId = user.Id,
+                    Balance = 0,
+                    Currency = currency,
+                };
+                _context.Accounts.Add(account);
 
-            _context.Accounts.Add(account);
+            }
+
             await _context.SaveChangesAsync(cancellationToken);
             return Result.Success();
 

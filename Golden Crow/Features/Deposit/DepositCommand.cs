@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Golden_Crow.Models;
+using MediatR;
 
 namespace Golden_Crow.Features.Deposit
 {
@@ -6,11 +7,13 @@ namespace Golden_Crow.Features.Deposit
     {
         public int UserId { get; set; }
         public decimal Amount { get; set; }
+        public string Currency { get; set; }
 
-        public DepositCommand(int userId, decimal amount)
+        public DepositCommand(int userId, decimal amount, string currency)
         {
             UserId = userId;
             Amount = amount;
+            Currency = currency;
         }
     }
 }

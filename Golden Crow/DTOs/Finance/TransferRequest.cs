@@ -6,7 +6,7 @@ namespace Golden_Crow.DTOs.Finance
     public class TransferRequest
     {
        
-
+        public string Currency { get; set; }
        
         public string ReceiverLogin { get; set; }
 
