@@ -1,6 +1,7 @@
 using FluentValidation;
 using Golden_Crow.BackgroundService;
 using Golden_Crow.Database;
+using Golden_Crow.Database.RabbitMQ;
 using Golden_Crow.DTOs.User;
 using Golden_Crow.Middlewares;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,9 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
 
 });
+
+builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMQ"));
+builder.Services.AddSingleton<IMessageProducer, RabbitMqMessageProducer>();
 
 
 builder.Services.AddValidatorsFromAssemblyContaining<LoginRequest>();

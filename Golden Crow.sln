@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoldenCrown", "Golden Crow\GoldenCrown.csproj", "{0342F564-48E8-46DF-A666-33D4636C4218}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoldenCrown.TaxInspectionConsole2", "GoldenCrown.TaxInspectionConsole2\GoldenCrown.TaxInspectionConsole2.csproj", "{4EF268E8-4BEF-4E12-8496-B3E624A63D36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoldenCrown", "GoldenCrow\GoldenCrown.csproj", "{5D726635-0E1C-4A65-BCEC-9183CFC67FB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0342F564-48E8-46DF-A666-33D4636C4218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0342F564-48E8-46DF-A666-33D4636C4218}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0342F564-48E8-46DF-A666-33D4636C4218}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0342F564-48E8-46DF-A666-33D4636C4218}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EF268E8-4BEF-4E12-8496-B3E624A63D36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EF268E8-4BEF-4E12-8496-B3E624A63D36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EF268E8-4BEF-4E12-8496-B3E624A63D36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EF268E8-4BEF-4E12-8496-B3E624A63D36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D726635-0E1C-4A65-BCEC-9183CFC67FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D726635-0E1C-4A65-BCEC-9183CFC67FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D726635-0E1C-4A65-BCEC-9183CFC67FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D726635-0E1C-4A65-BCEC-9183CFC67FB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
